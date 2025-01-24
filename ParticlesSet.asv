@@ -24,8 +24,6 @@ classdef ParticlesSet
 
         % Predict step, predicts postiori belief based on priori belief and
         % system dynamics. 
-        % Since the system dynamic and noise is determined for a system, this is a
-        % static function. 
         % Simple 1-D movement command for system dynamic. 
         function obj = Predict(u, std)
             noise = randn(1, obj.size) * std; 
@@ -33,7 +31,28 @@ classdef ParticlesSet
             obj.particles = obj.particles + dist;
         end
 
-        function obj = Update()
+        % Update step, updates the postiori belief based on measurement and
+        % noise.
+        % z: array, observation
+        % R: standard deviation
+        % Assume that there is only one landmark and the noise is gaussian;
+        
+        function obj = Update(z, R)
+            %1-D distance
+            dist = obj.particles - z; 
+
+            % Update weights with gaussian noise
+            % normalpdf returns the possibility at z of N(dist, R); 
+            % Consider using toolbox normpdf()
+            obj.weights = obj.weights .* (1 / (R * sqrt(2 * pi))) * exp(-(z - dist)^2 / (2 * R^2));
+
+            % normalize weight; 
+            weights = 1.e-300;
+            weights /= sum(weights) ;
+        end
+        % Resampling function, maximizing the high-weighted particles. 
+        % Consider making this static. 
+        function obj = Resample()
             
         end
     end

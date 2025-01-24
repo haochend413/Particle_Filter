@@ -33,7 +33,29 @@ classdef ParticlesSet
 
         % Update step, updates the postiori belief based on measurement and
         % noise.
-        function obj = Update()
+        % z: array, observation
+        % R: standard deviation
+        % Assume that there is only one landmark and the measurement noise 
+        % is gaussian;
+        
+        function obj = Update(z, R)
+            %1-D distance
+            dist = obj.particles - z; 
+
+            % Update weights with gaussian noise
+            % normalpdf returns the possibility at z of N(dist, R); 
+            % Consider using toolbox normpdf()
+            obj.weights = obj.weights .* (1 / (R * sqrt(2 * pi))) * exp(-(z - dist)^2 / (2 * R^2));
+
+            % normalize weight; 
+            weights = obj.weights + 1.e-300;
+            weights = obj.weights / sum(obj.weights) ;
+        end
+
+
+        % Resampling function, maximizing the high-weighted particles. 
+        % Consider making this static. 
+        function obj = Resample()
             %
         end
     end
