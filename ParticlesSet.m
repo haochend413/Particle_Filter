@@ -4,7 +4,7 @@ classdef ParticlesSet
     properties
         size % number of particles used
         particles % md array, row: particle
-        weight % 1d array of the same size of particles; 
+        weights % 1d array of the same size of particles; 
         mean 
         var % variance of the distribution
     end
@@ -13,13 +13,15 @@ classdef ParticlesSet
         % Constructor, initializes randomly distributed particles of given size; 
         % Weight spread equally; 
         function obj = ParticlesSet(size, x_range)
+            % size
+            obj.size = size; 
             % 1-D particle array
             obj.particles = randi([x_range(1), x_range(2)], size(1));
 
             % weight
             w = 1/size;
             weight = ones(size);
-            obj.weight = weight.*w; 
+            obj.weights = weight.*w; 
         end
 
         % Predict step, predicts postiori belief based on priori belief and
@@ -48,8 +50,7 @@ classdef ParticlesSet
             obj.weights = obj.weights .* (1 / (R * sqrt(2 * pi))) * exp(-(z - dist)^2 / (2 * R^2));
 
             % normalize weight; 
-            weights = obj.weights + 1.e-300;
-            weights = obj.weights / sum(obj.weights) ;
+            obj.weights = obj.weights / sum(obj.weights + 1.e-300) ;
         end
 
 
@@ -62,7 +63,7 @@ classdef ParticlesSet
 
     methods(Static)
         % Estimate function, outputs mean and var of particle simulated distribution; 
-        function obj = estimate()
+        function obj = estimate(obj)
             obj.mean = sum(obj.particles.* obj.weight); 
             obj.var = sum(obj.weight .* (obj.particles - obj.mean).^2);
         end

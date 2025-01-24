@@ -6,3 +6,8 @@
 ### 1/23/2025
 
 - implemented Update function, assuming single landmark and gaussian measurement noise. 
+
+
+### 1/24/2025
+
+- fixed bugs. (see commit for details)
