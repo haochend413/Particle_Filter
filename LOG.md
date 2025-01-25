@@ -11,3 +11,4 @@
 ### 1/24/2025
 
 - fixed bugs. (see commit for details)
+- moved estimate to dynamic. 

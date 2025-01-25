@@ -1,4 +1,4 @@
-% 1-D particles
+% 1-D particle filter
 
 classdef ParticlesSet
     properties
@@ -20,14 +20,14 @@ classdef ParticlesSet
 
             % weight
             w = 1/size;
-            weight = ones(size);
-            obj.weights = weight.*w; 
+            weights = ones(size);
+            obj.weights = weights.*w; 
         end
 
         % Predict step, predicts postiori belief based on priori belief and
         % system dynamics. 
         % Simple 1-D movement command for system dynamic. 
-        function obj = Predict(u, std)
+        function obj = Predict(obj, u, std)
             noise = randn(1, obj.size) * std; 
             dist = noise + u; 
             obj.particles = obj.particles + dist;
@@ -38,10 +38,9 @@ classdef ParticlesSet
         % z: array, observation
         % R: standard deviation
         % Assume that there is only one landmark and the measurement noise 
-        % is gaussian;
-        
-        function obj = Update(z, R)
-            %1-D distance
+        % is gaussian;  
+        function obj = Update(obj, z, R)
+            % 1-D distance
             dist = obj.particles - z; 
 
             % Update weights with gaussian noise
@@ -55,20 +54,17 @@ classdef ParticlesSet
 
 
         % Resampling function, maximizing the high-weighted particles. 
-        % Consider making this static. 
-        function obj = Resample()
+        % Residual Resampling.  
+        function obj = Resample(obj)
             %
         end
-    end
 
-    methods(Static)
-        % Estimate function, outputs mean and var of particle simulated distribution; 
-        function obj = estimate(obj)
-            obj.mean = sum(obj.particles.* obj.weight); 
-            obj.var = sum(obj.weight .* (obj.particles - obj.mean).^2);
+        % Estimate function, outputing mean and var of particle simulated distribution; 
+        function obj = Estimate(obj)
+            obj.mean = sum(obj.particles.* obj.weights); 
+            obj.var = sum(obj.weights .* (obj.particles - obj.mean).^2);
         end
     end
-        
 end
 
 % functions; 
