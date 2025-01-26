@@ -98,13 +98,9 @@ classdef ParticlesSet
             residual_cumsum(-1) = 1.; % avoid round-off error
 
             % Sampling. 
-            random_vals = rand(n_slot); % Generate random values in [0, 1)
-            residual_particles = arrayfun(@(x) find(residual_cumsum >= x, 1), random_vals);
-            Updated_particles(sum(int_array) + 1 : obj.size) = residual_particles; 
-            
-            obj.particles = Updated_particles; 
-            % Weight normalization. 
-            obj.weights = ones(obj.size) / obj.size; 
+            random_vals = rand(obj.size - sum(int_array)); % Generate random values in [0, 1)
+            residual_particles = arrayfun(@(x) find(cumulative_sum >= x, 1), random_vals);
+            Updated_particles
 
         end
 
