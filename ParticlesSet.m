@@ -51,7 +51,8 @@ classdef ParticlesSet
             % Update weights with gaussian noise
             % normalpdf returns the possibility at z of N(dist, R); 
             % Consider using toolbox normpdf()
-            obj.weights = obj.weights .* (1 / (R * sqrt(2 * pi))) * exp(-(z - dist)^2 / (2 * R^2));
+            likelihood = (1 / (R * sqrt(2 * pi))) * exp(-0.5 * (dist / R).^2);
+            obj.weights = obj.weights .* likelihood;
 
             % normalize weight; 
             obj.weights = obj.weights / sum(obj.weights + 1.e-300) ;
@@ -87,7 +88,7 @@ classdef ParticlesSet
 
             n_slot = obj.size - sum(int_array); % number of slots
 
-            residual_array = obj.weights .* obj.size - int_array; % residual array; 
+            residual_array = obj.weights .* obj.size - double(int_array); % residual array; 
             residual_array = residual_array / sum(residual_array); % normalization; 
 
             % multinomial resampling; 
@@ -95,10 +96,10 @@ classdef ParticlesSet
             % interval; 
 
             residual_cumsum = cumsum(residual_array); 
-            residual_cumsum(-1) = 1.; % avoid round-off error
+            residual_cumsum(obj.size) = 1.; % avoid round-off error
 
             % Sampling. 
-            random_vals = rand(n_slot); % Generate random values in [0, 1)
+            random_vals = rand(1, n_slot); % Generate random values in [0, 1)
             residual_particles = arrayfun(@(x) find(residual_cumsum >= x, 1), random_vals);
             Updated_particles(sum(int_array) + 1 : obj.size) = residual_particles; 
             
