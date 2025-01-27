@@ -5,9 +5,9 @@ clear; clc;
 num_particles = 2000;  % Number of particles
 x_range = [0, 500];    % Range of x values for particles
 u = 150;                 % Movement command for prediction
-std_dev = 0;           % Standard deviation for prediction noise
+std_dev = 20;           % Standard deviation for prediction noise
 z = 200;                % Observation value
-R = 0;                 % Measurement noise standard deviation
+R = 20;                 % Measurement noise standard deviation
 
 % Initialize particle set
 disp('Initializing ParticlesSet...');

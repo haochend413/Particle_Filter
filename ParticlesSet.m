@@ -52,8 +52,8 @@ classdef ParticlesSet
             % Update weights with gaussian noise
             % normalpdf returns the possibility at z of N(dist, R); 
             % Consider using toolbox normpdf()
-            likelihood = (1 / (R * sqrt(2 * pi))) * exp(-0.5 * (dist / R).^2);
-            obj.weights = obj.weights .* likelihood;
+            likelihood = (1 / (R * sqrt(2 * pi))) * exp(-0.5 * (dist ./ R).^2);
+            obj.weights = obj.weights .* likelihood; % elementwise operations between arrays
 
             % normalize weight; 
             obj.weights = obj.weights / sum(obj.weights + 1.e-300) ;
