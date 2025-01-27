@@ -2,12 +2,12 @@
 clear; clc;
 
 % Initialize parameters
-num_particles = 50;  % Number of particles
-x_range = [0, 10];    % Range of x values for particles
-u = 5;                 % Movement command for prediction
-std_dev = 0.1;           % Standard deviation for prediction noise
-z = 6;                % Observation value
-R = 0.1;                 % Measurement noise standard deviation
+num_particles = 200;  % Number of particles
+x_range = [0, 100];    % Range of x values for particles
+u = 30;                 % Movement command for prediction
+std_dev = 5;           % Standard deviation for prediction noise
+z = 60;                % Observation value
+R = 10;                 % Measurement noise standard deviation
 
 % Initialize particle set
 disp('Initializing ParticlesSet...');
@@ -44,6 +44,8 @@ grid on;
 disp('Performing Update step...');
 particles_set = particles_set.Update(z, R);
 disp(['Sum of weights after Update: ', num2str(sum(particles_set.weights))]);
+disp(['Particles mean after Update: ', num2str(mean(particles_set.particles))]);
+disp(['Particles variance after Update: ', num2str(var(particles_set.particles))]);
 
 % Plot after Update step
 figure;
@@ -60,6 +62,7 @@ particles_set = particles_set.Resample();
 disp(['Particles mean after Resample: ', num2str(mean(particles_set.particles))]);
 disp(['Particles variance after Resample: ', num2str(var(particles_set.particles))]);
 disp(['Sum of weights after Resample: ', num2str(sum(particles_set.weights))]);
+disp(['Number of particles after Resample: ', num2str(length(particles_set.particles))]);
 
 % Plot after Resample step
 figure;

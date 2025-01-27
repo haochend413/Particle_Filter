@@ -1,7 +1,8 @@
 ### 1/26/2025
 
-- debugged Update function, still problematic
-- created test file, generated figures for particles
+- Completed 1-D particle filter implementation. 
+- fixed bugs in Update and Resample function.
+- generated test script that produces data and figures of the particles
 
 
 ### 1/25/2025

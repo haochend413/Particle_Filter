@@ -4,7 +4,7 @@ classdef ParticlesSet
 
     properties
         size % number of particles used
-        particles % md array, row: particle
+        particles % 1d array, row: particle
         weights % 1d array of the same size of particles; 
         mean 
         var % variance of the distribution
@@ -19,11 +19,11 @@ classdef ParticlesSet
             % size
             obj.size = size; 
             % 1-D particle array
-            obj.particles = randi([x_range(1), x_range(2)], size(1));
+            obj.particles = randi([x_range(1), x_range(2)], 1, size);
 
             % weight
             w = 1/size;
-            weights = ones(size);
+            weights = ones(1, size);
             obj.weights = weights.*w; 
         end
 
@@ -64,23 +64,26 @@ classdef ParticlesSet
         % After resampling, the weights of all particles goes back to 1/N. 
         function obj = Resample(obj)
             % Weight * N copy
-            int_array = int32(obj.weights .* obj.size);
+            int_array = int32(obj.weights .* obj.size); % correct
 
             % Update particle array.
-           
-            Updated_particles = ones(obj.size);
+            Updated_particles = ones(1, obj.size);
 
             % for every index in the int_array, the particle along with its
             % weight get repeated; 
 
+            index = 1;
             for i = 1:obj.size % int_array
                 k = int_array(i);
 
+                
                 % particle at position(i) gets updated by k times;
                 for j = 1:k
-                    Updated_particles(j) = obj.particles(i); 
+                    Updated_particles(index) = obj.particles(i); 
+                    index = index + 1; 
                 end
             end
+
 
             % This leaves slots in the particle array since the integer is
             % floored. We fill in the slots by taking residuals and do
@@ -105,7 +108,7 @@ classdef ParticlesSet
             
             obj.particles = Updated_particles; 
             % Weight normalization. 
-            obj.weights = ones(obj.size) / obj.size; 
+            obj.weights = ones(1, obj.size) / obj.size; 
 
         end
 
