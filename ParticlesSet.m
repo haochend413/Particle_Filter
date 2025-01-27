@@ -31,6 +31,7 @@ classdef ParticlesSet
         % Predict step, predicts postiori belief based on priori belief and
         % system dynamics. 
         % Simple 1-D movement command for system dynamic. 
+        % u: distance moving forward (positive) or backwards(negative)
         function obj = Predict(obj, u, std)
             noise = randn(1, obj.size) * std; 
             dist = noise + u; 

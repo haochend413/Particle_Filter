@@ -7,7 +7,7 @@ x_range = [0, 500];    % Range of x values for particles
 u = 150;                 % Movement command for prediction
 std_dev = 0;           % Standard deviation for prediction noise
 z = 200;                % Observation value
-R = 0;                 % Measurement noise standard deviation
+R = 30;                 % Measurement noise standard deviation
 
 % Initialize particle set
 disp('Initializing ParticlesSet...');

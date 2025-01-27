@@ -1,3 +1,7 @@
+### 1/27/2025
+
+- bug: if variance is zero, then sum of weights after update is 0; 
+
 ### 1/26/2025
 
 - Completed 1-D particle filter implementation. 
