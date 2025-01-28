@@ -1,5 +1,7 @@
 ### 1/27/2025
 
+- completed systematic resampling implementation
+- created test script for data and figures
 - bug: if variance is zero, then sum of weights after update is 0; 
 
 ### 1/26/2025
