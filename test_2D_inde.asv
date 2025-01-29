@@ -1,0 +1,50 @@
+% 2-D test 
+% Performing system dynamics individually
+% x_axis will use residual resampling, y_axis will use systematic
+% resampling. 
+% 3-D graph, with the x-axis and y-axis, 
+
+clear;clc;
+
+% Initialize parameters
+num_particlesx = 2000;  % Number of particles
+x_range = [0, 500];    % Range of x values for particles
+ux = 150;                 % Movement command for prediction
+std_devx = 20;           % Standard deviation for prediction noise
+zx = 200;                % Observation value
+Rx = 20;                 % Measurement noise standard deviation
+
+% Initialize parameters
+num_particlesy = 2000;  % Number of particles
+y_range = [0, 500];    % Range of y values for particles
+uy = 150;                 % Movement command for prediction
+std_devy = 20;           % Standard deviation for prediction noise
+zy = 200;                % Observation value
+Ry = 20;                 % Measurement noise standard deviation
+
+
+% init
+x_axis = ParticlesSet(num_particlesx, x_range);
+y_axis = ParticlesSet(num_particlesy, y_range);
+
+
+% predict
+x_axis = x_axis.Predict(ux, std_devx);
+y_axis = y_axis.Predict(uy, std_devy);
+
+
+% update
+x_axis = x_axis.Update(zx, Rx);
+y_axis = y_axis.Update(zy, Ry);
+
+
+% resample
+x_axis = x_axis.resResample(); 
+y_axis = y_axis.sysResample(); 
+
+
+% estimate
+x_axis.Estimate(); 
+y_axis.Estimate(); 
+
+

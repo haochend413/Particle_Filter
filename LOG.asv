@@ -1,10 +1,7 @@
 ### 1/28/2025
 
 - generated test cases for 2D system
-- bug: particles for two dimensions don't fit since they are ordered randomly.
-- sol: using a map to list them together and align them by sorting. 
-
-
+- bug: the particles are ordered randomly, so 
 ### 1/27/2025
 
 - completed systematic resampling implementation
