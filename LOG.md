@@ -3,6 +3,7 @@
 - generated test cases for 2D system
 - bug: particles for two dimensions don't fit since they are ordered randomly.
 - sol: using a map to list them together and align them by sorting. 
+- modified file structure: added tests file
 
 
 ### 1/27/2025
