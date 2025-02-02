@@ -1,3 +1,13 @@
+### 2/2/2025
+
+- implemented init, predict and update functions for x-v system
+
+### 1/31/2025
+
+- Current plan: (see folder Force_driven_sys)
+  1. implement x-v system : time-sequential, multi-dimensional and mutually dependent. 
+  2. after implementation, generalize it. 
+
 ### 1/28/2025
 
 - generated test cases for 2D system

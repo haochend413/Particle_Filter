@@ -1,0 +1,12 @@
+% main, where the algorithms are run
+% still, I think a class is a very good idea. 
+
+% what user needs to define for system initialization: 
+% 1. dimensions (numbers of columns); 
+% 2. size (number of particles/rows); 
+% 3. init range for each dimension (range of particle values); 
+
+% what the init function returns: 
+% The multidimensional array representing the particles; 
+% 
+function []
