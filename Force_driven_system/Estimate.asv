@@ -25,9 +25,5 @@ function [mean_x, mean_v, var_x, var_v] = Estimate(particles, weights)
     end
 
     % calculate mean
-    mean_x = sum(x_array .* weights); 
-    mean_v = sum(v_array .* weights); 
-    var_x = sum(weights .* (x_array - mean_x).^2);
-    var_v = sum(weights .* (v_array - mean_v).^2);
     
 end

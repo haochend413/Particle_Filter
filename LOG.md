@@ -1,3 +1,7 @@
+### 2/3/2025
+
+- implemented resample and estimate functions
+
 ### 2/2/2025
 
 - implemented init, predict and update functions for x-v system
