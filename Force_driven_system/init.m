@@ -9,31 +9,18 @@
 
 
 function [particles, weights] = init(ranges)
-    % x range : 0-1000
-    % v range : -5 - 5
-    x_range = ranges(1);
-    v_range = ranges(2);
+    % Define position and velocity ranges
+    x_range = ranges(1, :);
+    v_range = ranges(2, :);
     
-    % array for x and v
-    x_array = x_range(1):1:x_range(2);
-    v_array = v_range(1):1:v_range(2);
+    % Generate two different grid for x and v
+    [X, V] = meshgrid(x_range(1):x_range(2), v_range(1):v_range(2));
+    particles = [X(:), V(:)];
     
-    size_x = length(x_array);
-    size_v = length(v_array); 
-
-    particles = cell(1, size_v * size_x);
-    % Populate Particle Array
-    for i = 1:size_x
-        for j = 1:size_v
-            p = {x_array(i), v_array(j)};
-            particles(i) = p;
-        end
-    end
-    
-    % init weight
-    
-    % weight
-    w = 1/(size_x * size_v);
-    weights = ones(1, (size_x * size_v));
-    weights = weights.*w;
+    % Initialize normalized weights
+    num_particles = size(particles, 1);
+    weights = ones(num_particles, 1) / num_particles;
 end
+
+
+

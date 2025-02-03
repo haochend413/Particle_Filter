@@ -1,0 +1,128 @@
+% full function set fullScript.m
+
+
+
+% init particles
+
+function [particles, weights] = init(ranges) 
+    % x range : 0-1000
+    % v range : -5 - 5
+    x_range = ranges(1); 
+    v_range = ranges(2);
+    
+    % array for x and v
+    x_array = x_range(1):1:x_range(2);
+    v_array = v_range(1):1:v_range(2);
+    
+    size_x = length(x_array);
+    size_v = length(v_array); 
+
+    particles = cell(1, size_v * size_x);
+    % Populate Particle Array
+    for i = 1:size_x
+        for j = 1:size_v
+            p = {x_array(i), v_array(j)};
+            particles(i) = p;
+        end
+    end
+    
+    % init weight
+    
+    % weight
+    w = 1/(size_x * size_v);
+    weights = ones(1, (size_x * size_v));
+    weights = weights.*w;
+end
+
+
+% predict step
+
+function [predicted_particles] = Predict(particles, t)
+    % matrix multiplication of speed and velocity
+    predicted_particles = cell(length(particles));
+
+    % initialize matrix
+    sys_dyn = [1, t; 0, 1]; 
+
+    % elementwise multiplication
+    for i = 1:length(particles)
+        p = sys_dyn * particles(i); 
+        predicted_particles(i) = p; 
+    end
+end
+
+
+% Update Step
+
+function [updated_weights] = Update(particles, weights)
+    % Set up pos array
+    x_array = cell(1, particles.length());
+    for i = 1:length(particles)
+        pair = particles(i);
+        x_array(i) = pair(1);
+    end
+    
+    % 1-D distance
+    dist = x_array - z;
+    likelihood = (1 / (R * sqrt(2 * pi))) * exp(-0.5 * (dist ./ R).^2);
+    updated_weights = weights .* likelihood; % elementwise operations between arrays
+    updated_weights = updated_weights / sum(weights + 1.e-300); % prevent divide by 0; 
+end
+
+
+
+% Resample Step
+
+function [resampled_particles, norm_weights] = Resample(particles, weights)
+    % make partition
+    size = length(particles);
+    size_index = 1:size;
+    positions = (size_index + rand(1, size)) / size;
+    positions(size) = 0.99999;
+    
+    % Resample
+    weights_cumsum = cumsum(weights);
+    
+    i = 1;
+    j = 1;
+    
+    Updated_particles = ones(1, size);
+    
+    while i <= size
+    
+        if positions(i) < weights_cumsum(j)
+            Updated_particles(i) = particles(j);
+            i = i + 1;
+        else
+            j = j + 1;
+        end
+    
+    end
+    
+    % Update particles and normalize weights
+    resampled_particles = Updated_particles;
+    norm_weights = ones(1, size) .* (1/size);
+    
+end
+
+
+% Estimate parameters
+
+function [mean_x, mean_v, var_x, var_v] = Estimate(particles, weights)
+    x_array = zeros(1, length(particles));
+    v_array = zeros(1, length(particles));
+
+    % populate x, v arrays
+    for i = 1:length(particles)
+        p = particles(i);
+        x_array(i) = p(1);
+        v_array(i) = p(2);
+    end
+
+    % calculate mean
+    mean_x = sum(x_array .* weights); 
+    mean_v = sum(v_array .* weights); 
+    var_x = sum(weights .* (x_array - mean_x).^2);
+    var_v = sum(weights .* (v_array - mean_v).^2);
+    
+end

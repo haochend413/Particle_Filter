@@ -8,18 +8,16 @@
 
 % output: updated weights array
 
-function [updated_weights] = update(particles, weights)
-    % Set up pos array
-    x_array = cell(1, particles.length());
-    for i = 1:length(particles)
-        pair = particles(i);
-        x_array(i) = pair(1);
-    end
+function updated_weights = Update(particles, weights, z, R)
+    % Compute distances between particle positions and measurement z
+    dist = particles(:, 1) - z;
     
-    % 1-D distance
-    dist = x_array - z;
+    % Compute likelihood
+    % Assume gaussian observation noise
     likelihood = (1 / (R * sqrt(2 * pi))) * exp(-0.5 * (dist ./ R).^2);
-    updated_weights = weights .* likelihood; % elementwise operations between arrays
-    updated_weights = updated_weights / sum(weights + 1.e-300); % prevent divide by 0; 
+    
+    % Update and normalize weights
+    updated_weights = weights .* likelihood;
+    updated_weights = updated_weights / sum(updated_weights + 1.e-300);
 end
 

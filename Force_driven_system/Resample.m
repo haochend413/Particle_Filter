@@ -12,35 +12,34 @@
 
 
 function [resampled_particles, norm_weights] = Resample(particles, weights)
+    num_particles = length(weights);
+
     % make partition
-    size = length(particles);
-    size_index = 1:size;
-    positions = (size_index + rand(1, size)) / size;
-    positions(size) = 0.99999;
+    positions = (rand(num_particles, 1) + (0:num_particles-1)') / num_particles;
+    positions(num_particles) = 0.99999; 
     
-    % Resample
+    % Cumulative sum of weights
     weights_cumsum = cumsum(weights);
     
+    % Systematic resampling
     i = 1;
     j = 1;
-    
-    Updated_particles = ones(1, size);
-    
-    while i <= size
-    
-        if positions(i) < weights_cumsum(j)
-            Updated_particles(i) = particles(j);
-            i = i + 1;
-        else
-            j = j + 1;
-        end
-    
+    resampled_particles = zeros(size(particles));
+    while i <= num_particles
+        
+            if positions(i) < weights_cumsum(j)
+                resampled_particles(i, :) = particles(j, :);
+                i = i + 1;
+            else
+                j = j + 1;
+            end
+            if j > num_particles
+                break; 
+            end
     end
     
-    % Update particles and normalize weights
-    resampled_particles = Updated_particles;
-    norm_weights = ones(1, size) .* (1/size);
-    
-    end
+    % Assign equal weights
+    norm_weights = ones(num_particles, 1) / num_particles;
+end
     
    
