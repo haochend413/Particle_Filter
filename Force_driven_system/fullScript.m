@@ -3,34 +3,42 @@
 
 
 % init particles
-
-function [particles, weights] = init(ranges)
+% this generates all possible integer-valued particles 
+function [particles, weights] = init(ranges, num_particles)
     % Define position and velocity ranges
     x_range = ranges(1, :);
     v_range = ranges(2, :);
     
-    % Generate all possible (x, v) pairs
-    [X, V] = meshgrid(x_range(1):x_range(2), v_range(1):v_range(2));
-    particles = [X(:), V(:)];
+    % Generate random positions and velocities within the specified ranges
+    x_values = x_range(1) + (x_range(2) - x_range(1)) * rand(num_particles, 1);
+    v_values = v_range(1) + (v_range(2) - v_range(1)) * rand(num_particles, 1);
     
-    % Initialize uniform weights
-    num_particles = size(particles, 1);
+    % Combine into particle matrix
+    particles = [x_values, v_values];
     weights = ones(num_particles, 1) / num_particles;
 end
 
 
 % predict step
+% each particle is moved according to its own velocity. 
 
-function predicted_particles = Predict(particles, t)
+function predicted_particles = predict(particles, t, std)
     % State transition matrix
+    % this needs to come with some noise! which can be some random
+    % acceleration that I do not know of. 
+
     sys_dyn = [1, t; 0, 1]; 
+    process_noise = std .* randn(size(particles));
     
     % Apply transition to all particles
-    predicted_particles = (sys_dyn * particles')';
+    % use transpose to do matrix multiplication
+    predicted_particles = (sys_dyn * particles')' + process_noise;
 end
 
-% Update Step
 
+
+% Update Step
+% updated only according to the position we have
 function updated_weights = Update(particles, weights, z, R)
     % Compute distances between particle positions and measurement z
     dist = particles(:, 1) - z;
@@ -46,6 +54,7 @@ end
 
 
 % Resample Step
+% system resampling, according to the weights; 
 
 function [resampled_particles, norm_weights] = Resample(particles, weights)
     num_particles = length(weights);
@@ -75,7 +84,6 @@ end
 
 
 % Estimate parameters
-
 function [mean_x, mean_v, var_x, var_v] = Estimate(particles, weights)
     % Compute mean values
     mean_x = sum(particles(:, 1) .* weights);

@@ -8,18 +8,19 @@
 % 2. The 1-D weight array that represent the possibility of that particle;
 
 
-function [particles, weights] = init(ranges)
+function [particles, weights] = init(ranges, num_particles)
     % Define position and velocity ranges
     x_range = ranges(1, :);
     v_range = ranges(2, :);
     
-    % Generate two different grid for x and v
-    [X, V] = meshgrid(x_range(1):x_range(2), v_range(1):v_range(2));
-    particles = [X(:), V(:)];
+    % Generate random positions and velocities within the specified ranges
+    x_values = x_range(1) + (x_range(2) - x_range(1)) * rand(num_particles, 1);
+    v_values = v_range(1) + (v_range(2) - v_range(1)) * rand(num_particles, 1);
     
-    % Initialize normalized weights
-    num_particles = size(particles, 1);
+    % Combine into particle matrix
+    particles = [x_values, v_values];
     weights = ones(num_particles, 1) / num_particles;
+    
 end
 
 

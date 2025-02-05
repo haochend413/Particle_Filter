@@ -1,3 +1,8 @@
+### 2/4/2025
+
+- increased the number of particles, simulation is making some sense. 
+- bug: the initial randomness of particles can sometimes lead to bad results; 
+
 ### 2/3/2025
 
 - debugged functions and made test case in main.m
