@@ -10,7 +10,7 @@
 % Force is a function of time, which is evenly spaced and discrete;
 % Position and velocity are dependent;
 
-%%%%%%%%%%% Test Script for Particle Filter %%%%%%%%%%%%%%
+%%%%%%%%%%% Test Script for Particle Filter %%%%%%%%%%%%%% 
 
 
 
@@ -44,14 +44,14 @@ for t = 1:num_steps
     % true_position = x0 + sin(t); 
 
     
-    % Generate observation with noise
-    z = true_position + measurement_noise * randn;
     
     % Predict step (motion model)
     particles = Predict(particles, 1, 2);  % Assume time step of 1, std of guassian noise to be 2; 
     
     % Update weights based on position observation
-    weights = Update(particles, weights, z, measurement_noise);
+    % Generate observation with noise
+    
+    weights = Update(particles, weights, true_position, measurement_noise);
     
     % Resample particles
     [particles, norm_weights] = Resample(particles, weights, position_noise_std, velocity_noise_std);

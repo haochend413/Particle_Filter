@@ -10,9 +10,9 @@
 
 function updated_weights = Update(particles, weights, z, R)
     % Compute distances between particle positions and measurement z
-    dist = particles(:, 1) - z;
+    dist = particles(:, 1) - z; 
     
-    % Compute likelihood
+    % Compute likelihood 
     % Assume gaussian observation noise
     likelihood = (1 / (R * sqrt(2 * pi))) * exp(-0.5 * (dist ./ R).^2);
     

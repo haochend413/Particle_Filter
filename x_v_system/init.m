@@ -19,7 +19,7 @@ function [particles, weights] = init(ranges, num_particles)
     
     % Combine into particle matrix
     particles = [x_values, v_values];
-    weights = ones(num_particles, 1) / num_particles;
+    weights = ones(num_particles, 1) / num_particles; 
     
 end
 

@@ -12,8 +12,10 @@ function predicted_particles = predict(particles, t, std)
     % this needs to come with some noise! which can be some random
     % acceleration that I do not know of. 
 
+    % noise in speed: [-1 ~ 1]; 
     random_acceleration = 2 * rand() - 1; 
 
+    % System dynamics with Gaussian noise; 
     sys_dyn = [1, t; 0, 1 + random_acceleration]; 
     process_noise = std .* randn(size(particles));
     
