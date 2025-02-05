@@ -1,3 +1,6 @@
+% test script ; no direction change for particles; 
+
+
 %%%%%%%%%%% System Description %%%%%%%%%%%%%%
 
 % Force-driven car with certain weight;
@@ -13,10 +16,14 @@
 
 % Set parameters
 ranges = [0, 100; -10, 10];  % Define position and velocity ranges [x_range; v_range]
-num_particles = 1000000; 
+num_particles = 2000000; 
 num_steps = 50;               % Number of time steps
 x0 = 5;                       % Initial position
-measurement_noise = 1;        % Measurement noise (R) 
+measurement_noise = 2;        % Measurement noise (R) 
+
+% jittering noises for position and velocity
+position_noise_std = 0.5;
+velocity_noise_std = 0.1;
 
 
 
@@ -30,8 +37,11 @@ history_true_velocity = zeros(num_steps, 1);
 
 % Simulate particle filter over time
 for t = 1:num_steps
-    % Simulate true motion
-    true_position = x0 + sin(t); 
+
+    % linear case
+    true_position = x0 + t; 
+    % nonlinear case
+    % true_position = x0 + sin(t); 
 
     
     % Generate observation with noise
@@ -44,10 +54,26 @@ for t = 1:num_steps
     weights = Update(particles, weights, z, measurement_noise);
     
     % Resample particles
-    [particles, norm_weights] = Resample(particles, weights);
+    [particles, norm_weights] = Resample(particles, weights, position_noise_std, velocity_noise_std);
+
+
+    
+    disp(['size of particles: ', num2str(size(particles, 1))]); 
     
     % Estimate parameters
     [mean_x, mean_v, ~, ~] = Estimate(particles, weights);
+
+    %     % plot 
+    % if t <= 20
+    % figure;
+    % scatter(particles(:, 1), particles(:, 2), 10, 'filled');
+    % xlabel('Position'); 
+    % ylabel('Velocity');
+    % title('Resampled Particles');
+    % grid on;
+    % 
+    % yline(mean_v, 'b', 'LineWidth', 2); % Horizontal line for mean velocity
+    % end 
     
     % Store history for plotting
     history_particles(t, :) = [mean_x, mean_v];
@@ -73,8 +99,17 @@ title('Position Estimation Over Time');
 title('Estimated Position vs True Position'); 
 
 subplot(2, 1, 2);
-plot(1:num_steps, history_particles(:, 2), 'b', 'DisplayName', 'Estimated Velocity');
+plot(1:num_steps, history_particles(:, 2), 'b', 'DisplayName', 'Estimated Velocity'); % Plot the velocity
+
+% Compute the overall mean velocity across all time steps
+overall_mean_velocity = mean(history_particles(:, 2));
+
+% Plot the overall mean velocity as a constant horizontal line
+hold on; % Hold the current plot to overlay the mean line
+plot(1:num_steps, repmat(overall_mean_velocity, num_steps, 1), 'r--', 'DisplayName', 'Overall Mean Velocity'); % Red dashed line for overall mean
+
 xlabel('Time Step');
 ylabel('Velocity');
 legend;
 title('Estimated Velocity Over Time');
+hold off; % Release the hold to prevent future plots from being added to the same figure

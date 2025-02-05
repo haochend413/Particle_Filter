@@ -1,7 +1,10 @@
 ### 2/4/2025
 
+- serious weight collapse; possible solution: lifebelt pf; 
+- added particle jittering; 
+- added linear test case, should try in non-linear cases; 
 - increased the number of particles, simulation is making some sense. 
-- bug: the initial randomness of particles can sometimes lead to bad results; 
+- bug: after many rounds of resampling, serious particle impoverishment; 
 
 ### 2/3/2025
 

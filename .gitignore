@@ -169,3 +169,35 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+# MATLAB 
+
+
+
+# MATLAB autosave files
+*.asv
+*.m~
+
+# Compiled MEX binaries (all platforms)
+*.mex*
+
+# Packaged app and toolbox files
+*.mlappinstall
+*.mltbx
+
+# Generated helpsearch folders
+helpsearch*/
+
+# Simulink code generation folders
+slprj/
+sccprj/
+
+# MATLAB code generation folders
+codegen/
+
+# Simulink autosave extension
+*.autosave
+
+# Octave session info
+octave-workspace

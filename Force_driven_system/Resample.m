@@ -11,7 +11,7 @@
 % 2. updated weights
 
 
-function [resampled_particles, norm_weights] = Resample(particles, weights)
+function [resampled_particles, norm_weights] = Resample(particles, weights, position_noise_std, velocity_noise_std)
     num_particles = length(weights);
 
     % make partition
@@ -19,7 +19,7 @@ function [resampled_particles, norm_weights] = Resample(particles, weights)
     positions(num_particles) = 0.99999; 
     
     % Cumulative sum of weights
-    weights_cumsum = cumsum(weights);
+    weights_cumsum = cumsum(weights); 
     
     % Systematic resampling
     i = 1;
@@ -40,6 +40,15 @@ function [resampled_particles, norm_weights] = Resample(particles, weights)
     
     % Assign equal weights
     norm_weights = ones(num_particles, 1) / num_particles;
+
+    % Add Gaussian noise to resampled particles
+    noise_x = position_noise_std * randn(num_particles, 1);  % Noise for position
+    noise_v = velocity_noise_std * randn(num_particles, 1);  % Noise for velocity
+    
+    % Apply noise to each resampled particle
+    resampled_particles(:, 1) = resampled_particles(:, 1) + noise_x;  % Update positions with noise
+    resampled_particles(:, 2) = resampled_particles(:, 2) + noise_v;  % Update velocities with noise
+
 end
     
    

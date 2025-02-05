@@ -12,7 +12,9 @@ function predicted_particles = predict(particles, t, std)
     % this needs to come with some noise! which can be some random
     % acceleration that I do not know of. 
 
-    sys_dyn = [1, t; 0, 1]; 
+    random_acceleration = 2 * rand() - 1; 
+
+    sys_dyn = [1, t; 0, 1 + random_acceleration]; 
     process_noise = std .* randn(size(particles));
     
     % Apply transition to all particles
