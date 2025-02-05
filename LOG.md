@@ -1,5 +1,15 @@
-### 2/4/2025
+### 2/5/2024
 
+- implemented good x-v system (straight line and sinusoidal)
+
+Weekly Meeting: 
+
+- System dynamics should align with the real data; Manually apply a noise in the true outputs, which is also populated by a dynamics with certain noise; Process the particles with another kind of noise, see if the original noise is eliminated; 
+- make true system script that can be plotted and generate the observations from there. 
+
+### 2/4/2024
+
+- debugged Update function
 - serious weight collapse; possible solution: lifebelt pf; 
 - added particle jittering; 
 - added linear test case, should try in non-linear cases; 

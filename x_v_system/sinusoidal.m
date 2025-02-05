@@ -16,24 +16,25 @@
 
 % Set parameters
 
+% actual_system
+true_noise = 0.0001; 
+
 % init
-ranges = [0, 100; -10, 10];  % Define position and velocity ranges [x_range; v_range]
-num_particles = 2000000; 
+ranges = [-1, 1; -1, 1];  % Define position and velocity ranges [x_range; v_range]
+num_particles = 100000; 
 num_steps = 50;               % Number of time steps
 dt = 1;
 
 % predict
-x0 = 5;                       % Initial position
-process_noise = 2; 
+process_noise = 0.2; 
 
 % update
-measurement_noise = 2;        % Measurement noise (R) 
+measurement_noise = 0.2;        % Measurement noise (R) 
 
 
 % resample
-position_noise_std = 0.01;  % jittering noises for position and velocity
-velocity_noise_std = 0.01; 
-
+position_noise_std = 0.001;  % jittering noises for position and velocity
+velocity_noise_std = 0.001; 
 
 
 
@@ -51,17 +52,17 @@ history_true_velocity = zeros(num_steps, 1);
 % Simulate particle filter over time
 for t = 1:dt:num_steps
 
-    % straight line case
-    true_position = t + t*t; % v0 = 1; 
-    % This should come with some noise; 
-    true_position = true_position + 10 * randn(1); 
-    true_velocity = 1 + 2 * t; 
+
+    % sinusoidal case
+    true_position = sin(t);
+    true_position = true_position + true_noise * randn(1); 
+    true_velocity = cos(t); 
 
 
     
     
     % Predict step (motion model)
-    a = 2; 
+    a = -sin(t); 
     particles = Predict(particles, dt, process_noise, a);  % Assume time step of 1, std of guassian noise to be 2; 
     
     % Update weights based on position observation
