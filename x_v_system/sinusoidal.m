@@ -21,15 +21,15 @@ true_noise = 0.0001;
 
 % init
 ranges = [-1, 1; -1, 1];  % Define position and velocity ranges [x_range; v_range]
-num_particles = 100000; 
+num_particles = 2000000; 
 num_steps = 50;               % Number of time steps
 dt = 1;
 
 % predict
-process_noise = 0.2; 
+process_noise = 0.5; 
 
 % update
-measurement_noise = 0.2;        % Measurement noise (R) 
+measurement_noise = 0.5;        % Measurement noise (R) 
 
 
 % resample
@@ -70,7 +70,7 @@ for t = 1:dt:num_steps
     
     weights = Update(particles, weights, true_position, measurement_noise);
     
-    % Resample particles
+    % Resample particles, with proper jittering; 
     [particles, norm_weights] = Resample(particles, weights, position_noise_std, velocity_noise_std);
 
 
@@ -81,7 +81,7 @@ for t = 1:dt:num_steps
     [mean_x, mean_v, ~, ~] = Estimate(particles, weights);
 
     % % plot 
-    % if t <= 40
+    % if t >= 40
     % figure;
     % scatter(particles(:, 1), particles(:, 2), 10, 'filled');
     % xlabel('Position'); 

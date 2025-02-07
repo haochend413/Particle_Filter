@@ -15,6 +15,9 @@ function predicted_particles = Predict(particles, dt, std, a)
     % System dynamics with Gaussian noise; 
     A = [1, dt; 0, 1];
     B = [0, a * dt]; 
+    % different noise std for x and v; 
+    std = [0.5, 0.01]; 
+
     process_noise = std .* randn(size(particles)); 
     
     % Apply transition to all particles

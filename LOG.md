@@ -1,3 +1,7 @@
+### 2/6/2025
+
+- implemented real system for straight-line
+
 ### 2/5/2024
 
 - implemented good x-v system (straight line and sinusoidal)
