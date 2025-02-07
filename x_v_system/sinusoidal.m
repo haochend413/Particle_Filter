@@ -22,11 +22,11 @@ true_noise = 0.0001;
 % init
 ranges = [-1, 1; -1, 1];  % Define position and velocity ranges [x_range; v_range]
 num_particles = 2000000; 
-num_steps = 50;               % Number of time steps
+num_steps = 120;               % Number of time steps
 dt = 1;
 
 % predict
-process_noise = 0.5; 
+process_noise = [0.01, 0.01]; 
 
 % update
 measurement_noise = 0.5;        % Measurement noise (R) 

@@ -24,7 +24,7 @@ dt = 1;
 
 % predict
 x0 = 5;                       % Initial position
-process_noise = 2; 
+process_noise = [2, 0.1]; 
 
 % update
 measurement_noise = 2;        % Measurement noise (R) 
@@ -47,6 +47,15 @@ velocity_noise_std = 0.01;
 history_particles = zeros(num_steps, 2);
 history_estimates = zeros(num_steps, 1);
 history_true_velocity = zeros(num_steps, 1);
+
+
+% load true data from real system
+load("positions.mat","positions");
+load("velocities.mat", "velocities"); 
+true_positions = positions; 
+true_velocities = velocities; 
+
+
 
 % Simulate particle filter over time
 for t = 1:dt:num_steps

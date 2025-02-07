@@ -1,3 +1,7 @@
+### 2/7/2025
+
+- fix: different noise constant in predict for each dimension
+
 ### 2/6/2025
 
 - implemented real system for straight-line

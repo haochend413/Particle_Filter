@@ -32,6 +32,9 @@ for t = 1:num_steps
     velocities(t) = p(2);
 end
 
+save('positions.mat', 'positions'); 
+save('velocities.mat', "velocities")
+
 % Plot results
 figure;
 
