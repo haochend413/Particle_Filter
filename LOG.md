@@ -1,3 +1,10 @@
+### 2/11
+- I think the reason why the result diverges is that size of dt is too large, and the reason for collapse is sample impoverishment; 
+- added gaussian init function
+- separated jittering from resampling
+- adjusted sinusoidal parameters
+
+
 ### 2/7/2025
 
 - fix: different noise constant in predict for each dimension

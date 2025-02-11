@@ -17,40 +17,43 @@
 % Set parameters
 
 % actual_system
-true_noise = 0.0001; 
+true_noise = 0.3; 
 
 % init
 ranges = [-1, 1; -1, 1];  % Define position and velocity ranges [x_range; v_range]
-num_particles = 2000000; 
-num_steps = 120;               % Number of time steps
-dt = 1;
+num_particles = 200000; 
+num_steps = 2000;               % Number of time steps
+dt = 0.5; 
 
-% predict
-process_noise = [0.01, 0.01]; 
+% predict - noise of system dynamics 
+process_noise = [0.4, 0.4]; 
 
 % update
-measurement_noise = 0.5;        % Measurement noise (R) 
+measurement_noise = 0.8;        % Measurement noise (R) 
 
 
 % resample
-position_noise_std = 0.001;  % jittering noises for position and velocity
-velocity_noise_std = 0.001; 
+position_noise_std = 0.01;  % jittering noises for position and velocity
+velocity_noise_std = 0.01; 
 
 
 
 
 
 
-% Initialize particles
-[particles, weights] = init(ranges, num_particles);
+% Initialize particles 
+[particles, weights] = init_unif(ranges, num_particles);
 
 % Store history for plotting
 history_particles = zeros(num_steps, 2);
 history_estimates = zeros(num_steps, 1);
 history_true_velocity = zeros(num_steps, 1);
 
+
+t = 0; 
+
 % Simulate particle filter over time
-for t = 1:dt:num_steps
+for j = 1:num_steps
 
 
     % sinusoidal case
@@ -63,7 +66,7 @@ for t = 1:dt:num_steps
     
     % Predict step (motion model)
     a = -sin(t); 
-    particles = Predict(particles, dt, process_noise, a);  % Assume time step of 1, std of guassian noise to be 2; 
+    particles = sin_predict(particles, dt, process_noise, a);  % Assume time step of 1, std of guassian noise to be 2; 
     
     % Update weights based on position observation
     % Generate observation with noise
@@ -73,34 +76,38 @@ for t = 1:dt:num_steps
     % Resample particles, with proper jittering; 
     [particles, norm_weights] = Resample(particles, weights, position_noise_std, velocity_noise_std);
 
-
-    
     disp(['size of particles: ', num2str(size(particles, 1))]); 
     
     % Estimate parameters
     [mean_x, mean_v, ~, ~] = Estimate(particles, weights);
 
     % % plot 
-    % if t >= 40
-    % figure;
+    % if t >= 40 
+    % figure;  
     % scatter(particles(:, 1), particles(:, 2), 10, 'filled');
-    % xlabel('Position'); 
-    % ylabel('Velocity');
-    % title('Resampled Particles');
+    % xlabel('Position');  
+    % ylabel('Velocity'); 
+    % title('Resampled Particles'); 
     % grid on; 
     % 
     % yline(mean_v, 'b', 'LineWidth', 2); % Horizontal line for mean velocity
     % end 
     
     % Store history for plotting
-    history_particles(t, :) = [mean_x, mean_v];
-    history_estimates(t) = true_position;
-    history_true_velocity(t) = true_velocity;
+    history_particles(j, :) = [mean_x, mean_v];
+    history_estimates(j) = true_position;
+    history_true_velocity(j) = true_velocity;
 
     
     % Display progress
-    disp(['Step ', num2str(t), ': True Position = ', num2str(true_position), ...
-        ', Estimated Position = ', num2str(mean_x), ', Estimated Velocity = ', num2str(mean_v)]);
+    disp(['Step ', num2str(t), ...
+        ': True Position = ', num2str(true_position), ...
+        ', Estimated Position = ', num2str(mean_x), ...
+        ', Estimated Velocity = ', num2str(mean_v), ...
+        ', True Velocity: ', num2str(true_velocity)]); 
+
+
+    t = t + dt; 
 end
 
 % Plot results

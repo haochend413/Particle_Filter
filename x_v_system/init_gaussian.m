@@ -1,3 +1,5 @@
+% Particle initialization with Gaussian distribution
+
 % what user needs to define for system initialization:
 % 2. size (number of particles/rows);
 % 3. init range for each dimension (range of particle values);
@@ -8,14 +10,18 @@
 % 2. The 1-D weight array that represent the possibility of that particle;
 
 
-function [particles, weights] = init(ranges, num_particles)
+function [particles, weights] = init_gaussian(ranges, num_particles)
+    % define stds;
+    x_std = 0.2;
+    v_std = 0.2; 
+
     % Define position and velocity ranges
-    x_range = ranges(1, :);
-    v_range = ranges(2, :);
+    x_range = ranges(1, :); 
+    v_range = ranges(2, :); 
     
     % Generate random positions and velocities within the specified ranges
-    x_values = x_range(1) + (x_range(2) - x_range(1)) * rand(num_particles, 1);
-    v_values = v_range(1) + (v_range(2) - v_range(1)) * rand(num_particles, 1);
+    x_values = (x_range(1) + (x_range(2) - x_range(1)) / 2)  + x_std * randn(num_particles, 1);
+    v_values = (v_range(1) + (v_range(2) - v_range(1)) / 2)  + v_std * randn(num_particles, 1);
     
     % Combine into particle matrix
     particles = [x_values, v_values];

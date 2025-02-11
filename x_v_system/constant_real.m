@@ -1,16 +1,16 @@
 % Real-life system simulation
 
 % Initial conditions
-position = 10;
-velocity = 5;
-std = [0.5, 0.01]; % Standard deviation for position and velocity noise
+position = 500;
+velocity = 15;
+std = [5, 0.02]; % gaussian noise stds for (position, velocity)
 
 % Create single particle
-p = [position, velocity];
+p = [position, velocity]; 
 
-dt = 1;
-num_steps = 50; % Define the number of simulation steps
-a = 2; % Example acceleration value
+dt = 0.2;
+num_steps = 4000; % Define the number of simulation steps
+a = 0.2; % Example acceleration value 
 
 % Storage for plotting
 positions = zeros(num_steps, 1);
@@ -22,16 +22,18 @@ for t = 1:num_steps
     B = [0; a * dt];         % Control input matrix (column vector)
     
     % Generate noise for both position and velocity
-    real_noise = std .* randn(1, 2); % Ensures noise is 1×2, matching p
+    real_noise = std .* randn(1); 
 
     % Update state
     p = (A * p' + B)' + real_noise;
     
     % Store values for plotting
-    positions(t) = p(1);
-    velocities(t) = p(2);
+    positions(t) = p(1); % x
+    velocities(t) = p(2); % v
 end
 
+
+% Save for future output
 save('positions.mat', 'positions'); 
 save('velocities.mat', "velocities")
 
