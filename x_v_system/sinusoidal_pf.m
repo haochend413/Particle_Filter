@@ -15,21 +15,28 @@
 
 
 % Set parameters
+% ！！！！！！！
+
+% smaller dt will lead to better filtering results due to smaller error
+% each step;
+
+% When decreasing dt, also have to decrease true_noise and process_noise! 
+
 
 % actual_system
-true_noise = 0.3; 
+true_noise = 0.03; 
 
 % init
 ranges = [-1, 1; -1, 1];  % Define position and velocity ranges [x_range; v_range]
 num_particles = 200000; 
 num_steps = 2000;               % Number of time steps
-dt = 0.5; 
+dt = 0.01; 
 
 % predict - noise of system dynamics 
-process_noise = [0.4, 0.4]; 
+process_noise = [0.01, 0.01]; 
 
 % update
-measurement_noise = 0.8;        % Measurement noise (R) 
+measurement_noise = 1;        % Measurement noise (R) 
 
 
 % resample
@@ -74,7 +81,7 @@ for j = 1:num_steps
     weights = Update(particles, weights, true_position, measurement_noise);
     
     % Resample particles, with proper jittering; 
-    [particles, norm_weights] = Resample(particles, weights, position_noise_std, velocity_noise_std);
+    [particles, weights] = Resample(particles, weights, position_noise_std, velocity_noise_std);
 
     disp(['size of particles: ', num2str(size(particles, 1))]); 
     

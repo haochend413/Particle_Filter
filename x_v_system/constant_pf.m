@@ -18,20 +18,21 @@
 % init
 ranges = [0, 1000; 0, 50];   % Define position and velocity ranges [x_range; v_range]
 num_particles = 500000; 
-num_steps = 4000;               % Number of time steps 
-dt = 0.2;
+num_steps = 500;               % Number of time steps 
+dt = 0.5;
 
 % predict
 % x0 = 5;                       % Initial position
-process_noise = [7, 0.03]; 
+process_noise = [3, 0.3]; 
 a = 0.2; 
 
 % update
-measurement_noise = 10;        % Measurement noise (R); We only measure position; 
+measurement_noise = 5;        % Measurement noise (R); We only measure position; 
 
 % resample
 position_noise_std = 1;  % jittering noises for position and velocity
 velocity_noise_std = 1; 
+
 
 
 
@@ -67,12 +68,10 @@ for j = 1:num_steps
     % true_position = true_position + 10 * randn(1); 
     % true_velocity = 1 + 2 * t; 
 
-
-    
     
     % Predict step (motion model)
     
-    particles = Predict(particles, dt, process_noise, a);  % Assume time step of 1, std of guassian noise to be 2; 
+    particles = Predict(particles, t, dt, process_noise);  % Assume time step of 1, std of guassian noise to be 2; 
     
     % Update weights based on position observation
     % Generate observation with noise

@@ -10,8 +10,9 @@ std = [0.1, 0.1]; % gaussian noise stds for (position, velocity)
 % Create single particle
 p = [position, velocity]; 
 
-dt = 0.001; % time-track
-num_steps = 100000; % Define the number of simulation steps
+dt = 0.01; % time-track
+num_steps = 10000; % Define the number of simulation steps
+ 
 
 
 % Storage for plotting
@@ -19,19 +20,20 @@ positions = zeros(num_steps, 1);
 velocities = zeros(num_steps, 1);
 time = 1:num_steps;
 
+% we use t to keep track of the current step
 t = 0; 
 
 for j = 1:num_steps
 
+    a = -sin(t); 
 
-    A = [1, dt; -dt, 1];       % State transition matrix
+    % propogate model
+    A = [1, dt; 0, 1];       % A
+    B = [0, dt];             % control input
 
-    
-    % % Generate noise for both position and velocity
-    % real_noise = std .* randn(2,1); 
 
     % Update state
-    p = (A * p')';
+    p = (A * p')' + B * a;
     
     % Store values for plotting
     positions(j) = p(1); % x
