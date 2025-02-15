@@ -13,17 +13,17 @@ num_particles = 100000;
 
 % init system 
 num_steps = 700;               % Number of time steps 
-t = 0;                         % Start time
-dt = 0.02;
+t = 0;                         % time start with 0, increase each step
+dt = 0.02; 
 
 
 % Predict step (state model) 
 
-% | x |   | 1  dt | | x |   | ?  |
-% |   | = |       | |   | + |    | * a + process_noise
-% | v |   | 0   1 | | v |   | dt |
+% | x |            | 1  dt | | x |      | ?  |
+% |   |          = |       | |   |    + |    | * a + process_noise
+% | v | (t + dt)   | 0   1 | | v | (t)  | dt |
 
-% a is initialized inside the predict function
+% **!!!** a is initialized inside the predict function
 process_noise = [0.1, 0.001];      % [std_x, std_v]
 
 
@@ -63,7 +63,7 @@ history_true_velocity = zeros(num_steps, 1);
 %%%%%%%%%%%%%%%%%%%%%%%
 % PF Propagation
 %%%%%%%%%%%%%%%%%%%%%%%
-% particles and weights are sequentially updated
+% particles and weights are updated each step
 
 
 for j = 1:num_steps
@@ -144,14 +144,14 @@ hold off; % Release the hold to prevent future plots from being added to the sam
 
 
 
-    % % plot 
-    % if t <= 40
-    % figure;
-    % scatter(particles(:, 1), particles(:, 2), 10, 'filled');
-    % xlabel('Position'); 
-    % ylabel('Velocity');
-    % title('Resampled Particles');
-    % grid on; 
-    % 
-    % yline(mean_v, 'b', 'LineWidth', 2); % Horizontal line for mean velocity
-    % end 
+% % plot for debug
+% if t <= 40
+% figure;
+% scatter(particles(:, 1), particles(:, 2), 10, 'filled');
+% xlabel('Position');
+% ylabel('Velocity');
+% title('Resampled Particles');
+% grid on;
+%
+% yline(mean_v, 'b', 'LineWidth', 2); % Horizontal line for mean velocity
+% end

@@ -1,3 +1,7 @@
+### 2/15
+- fix updating weights
+- Completed 2D x_v system pf implementation
+
 ### 2/11
 - I think the reason why the result diverges is that size of dt is too large, and the reason for collapse is sample impoverishment; 
 - added gaussian init function

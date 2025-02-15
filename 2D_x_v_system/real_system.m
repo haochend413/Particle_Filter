@@ -7,7 +7,7 @@ velocity = 3;
 std = [0.1, 0.1]; % gaussian noise stds for (position, velocity)
 
 t = 0; 
-dt = 0.02; % time-track
+dt = 0.02; % time-track 
 num_steps = 700; % Define the number of simulation steps
  
 

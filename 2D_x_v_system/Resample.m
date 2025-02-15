@@ -45,10 +45,6 @@ function [resampled_particles, norm_weights] = Resample(particles, weights, posi
 
     % % Add Gaussian noise to resampled particles
 
-    % try deduce the noises from current velocity
-
-
-
     noise_x = position_noise_std * randn(num_particles, 1);  % Noise for position
     noise_v = velocity_noise_std * randn(num_particles, 1);  % Noise for velocity
 
