@@ -13,7 +13,7 @@ function predicted_particles = Predict(particles, t, dt, std)
     % acceleration that I do not know of.  
 
     % System dynamics with Gaussian noise; 
-    a = -9 * sin(3*t);
+    a = -9 * tan(3*t);
 
     A = [1, dt; 0, 1];
     B = [dt^2 / 2, dt]; 

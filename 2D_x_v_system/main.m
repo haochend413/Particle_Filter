@@ -8,13 +8,13 @@
 % Syncronize these parameters with real_system parameters! 
 
 % init particles
-ranges = [-1,1; -9, 9]; 
+ranges = [-2000,2000; -400, 400]; 
 num_particles = 100000; 
 
 % init system 
 num_steps = 700;               % Number of time steps 
 t = 0;                         % time start with 0, increase each step
-dt = 0.02; 
+dt = 0.04; 
 
 
 % Predict step (state model) 
@@ -72,9 +72,12 @@ for j = 1:num_steps
     % Filtering
     %%%%%%%%%%%%%%%%%%%%%%%
 
+    s1 = 10 * randn;  % Example value for scaling
+    s2 = 30 * randn; 
+
     % Get true data for each step
-    true_position = true_positions(j); 
-    true_velocity = true_velocities(j); 
+    true_position = true_positions(j) + s1; 
+    true_velocity = true_velocities(j) + s2; 
 
     % Predict
     particles = Predict(particles, t, dt, process_noise);  % Assume time step of 1, std of guassian noise to be 2; 

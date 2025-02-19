@@ -2,12 +2,12 @@
 
 
 % Initial conditions
-position = 5;
-velocity = 3;
-std = [0.1, 0.1]; % gaussian noise stds for (position, velocity)
+position = 1000;
+velocity = 300;
+std = [0.0001, 0.0002]; % gaussian noise stds for (position, velocity)
 
 t = 0; 
-dt = 0.02; % time-track 
+dt = 0.04; % time-track 
 num_steps = 700; % Define the number of simulation steps
  
 
@@ -23,12 +23,12 @@ p = [position, velocity];
 
 for j = 1:num_steps
 
-    a = -9*sin(3*t); 
+    a = -9*tan(3*t); 
 
     % propogate model
     A = [1, dt; 0, 1];       % A
     B = [dt^2 / 2, dt];             % control input
-
+    % process_noise = std .* randn(2, 1); 
 
     % Update state
     p = (A * p')' + B * a;
