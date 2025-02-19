@@ -1,5 +1,7 @@
 
-
+close all;
+clc;
+clear; 
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % Set Parameters
@@ -72,12 +74,9 @@ for j = 1:num_steps
     % Filtering
     %%%%%%%%%%%%%%%%%%%%%%%
 
-    s1 = 10 * randn;  % Example value for scaling
-    s2 = 30 * randn; 
-
     % Get true data for each step
-    true_position = true_positions(j) + s1; 
-    true_velocity = true_velocities(j) + s2; 
+    true_position = true_positions(j);
+    true_velocity = true_velocities(j);
 
     % Predict
     particles = Predict(particles, t, dt, process_noise);  % Assume time step of 1, std of guassian noise to be 2; 
@@ -99,12 +98,12 @@ for j = 1:num_steps
     %%%%%%%%%%%%%%%%%%%%%%%
     
     % Display progress
-    disp(['size of particles: ', num2str(size(particles, 1))]); 
-    disp(['Step ', num2str(t), ...
-        ': True Position = ', num2str(true_position), ...
-        ', Estimated Position = ', num2str(mean_x), ...
-        ', Estimated Velocity = ', num2str(mean_v), ...
-        ', True v', num2str(true_velocity)]);
+    % disp(['size of particles: ', num2str(size(particles, 1))]); 
+    % disp(['Step ', num2str(t), ...
+    %     ': True Position = ', num2str(true_position), ...
+    %     ', Estimated Position = ', num2str(mean_x), ...
+    %     ', Estimated Velocity = ', num2str(mean_v), ...
+    %     ', True v', num2str(true_velocity)]);
     
     
     % Store history for plotting
@@ -128,9 +127,10 @@ hold on;
 plot(dt:dt:num_steps * dt, history_particles(:, 1), 'b', 'DisplayName', 'Estimated Position', 'LineWidth', 2);
 xlabel('Time Step' , 'FontName', 'Times New Roman', 'FontSize', 12);
 ylabel('Position' , 'FontName', 'Times New Roman', 'FontSize', 12);
-legend;
+legend('Location','southeast');
 title('Position Estimation Over Time' , 'FontName', 'Times New Roman', 'FontSize', 12); 
-
+set(gca, 'FontSize', 20)
+set(gca, 'FontName', 'Times New Roman')
 
 
 
@@ -140,8 +140,12 @@ hold on;
 plot(dt:dt:num_steps * dt, history_particles(:, 2), 'b', 'DisplayName', 'Estimated Velocity','LineWidth', 2); 
 xlabel('Time Step' , 'FontName', 'Times New Roman', 'FontSize', 12);
 ylabel('Velocity' , 'FontName', 'Times New Roman', 'FontSize', 12);
-legend;
 title('Estimated Velocity Over Time' , 'FontName', 'Times New Roman', 'FontSize', 12);
+legend('Location','best');
+grid on; 
+set(gca, 'FontSize', 20)
+set(gca, 'FontName', 'Times New Roman')
+
 hold off; % Release the hold to prevent future plots from being added to the same figure
 
 

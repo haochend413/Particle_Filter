@@ -23,7 +23,9 @@ p = [position, velocity];
 
 for j = 1:num_steps
 
-    a = -9*tan(3*t); 
+    % with noise at base level
+    noise_a = randn * 80;
+    a = -9*tan(3*t) + noise_a; 
 
     % propogate model
     A = [1, dt; 0, 1];       % A
