@@ -17,7 +17,7 @@ function predicted_particles = Predict(particles, t, dt, std, input_noise, p, v)
     % feedback parameters
     k_pos = -0.6;
     k_vel = -0.3;
-    a = k_pos * p + k_vel * v + input_noise * randn;  
+    a = k_pos * p + k_vel * v;
 
     A = [1, dt; 0, 1];
     B = [dt^2 / 2, dt]; 
