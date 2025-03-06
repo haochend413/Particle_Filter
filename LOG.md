@@ -1,3 +1,8 @@
+### 3/6 
+- implemented feedback control 
+- generalized observation format
+- used estimation value for update
+
 ### 2/15
 - fix updating weights
 - Completed 2D x_v system pf implementation
