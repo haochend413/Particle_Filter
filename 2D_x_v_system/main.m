@@ -10,8 +10,8 @@ clear;
 % Syncronize these parameters with real_system parameters! 
 
 % init particles
-ranges = [-2000,2000; -400, 400]; 
-num_particles = 100000; 
+ranges = [-2000,2000; -400, 400];  
+num_particles = 100000;  
 
 % init system 
 num_steps = 700;               % Number of time steps 
@@ -60,7 +60,8 @@ history_true_velocity = zeros(num_steps, 1);
 % choose different init functions for different init patterns
 
 [particles, weights] = init_unif(ranges, num_particles); 
-
+[init_x, init_v,~,~] = Estimate(particles, weights); 
+estimate = [1000,0]; 
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % PF Propagation
@@ -89,7 +90,7 @@ for j = 1:num_steps
 
     % Estimate 
     [mean_x, mean_v, ~, ~] = Estimate(particles, weights);
-
+    estimate = [mean_x, mean_v]; 
     % Time Update
     t = t + dt; 
 

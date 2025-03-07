@@ -11,12 +11,12 @@ clear;
 
 % init particles
 ranges = [-2000,2000; -400, 400]; 
-num_particles = 100000; 
+num_particles = 10000; 
 
 % init system 
-num_steps = 2000;               % Number of time steps 
+num_steps = 1000;               % Number of time steps 
 t = 0;                         % time start with 0, increase each step
-dt = 0.03; 
+dt = 0.04; 
 
 
 % Predict step (state model) 
@@ -26,12 +26,9 @@ dt = 0.03;
 % | v | (t + dt)   | 0   1 | | v | (t)  | dt |
 
 % **!!!** a is initialized inside the predict function
-process_noise = [0.01, 0.01];      % [std_x, std_v] 
-input_noise = 1; % Gaussian std for input (a) noise; 
-
-
+process_noise = [1, 3];      % [std_x, std_v] 
 % Update Step (observation model)
-measurement_noise = 1;          % std_x_observed
+measurement_noise = 15;          % std_x_observed
  
 % Resampling
 position_noise_std = 1;  % jittering noises for position and velocity
@@ -68,7 +65,7 @@ history_true_velocity = zeros(num_steps, 1);
 % estimate result, start at [0,0] an get updated; 
 % the estimated results will be used instead of the observed results;
 [init_p, init_v, ~ ,~] = Estimate(particles, weights);
-estimate = [1000,3]; 
+estimate = [1000,5]; 
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % PF Propagation
@@ -83,22 +80,24 @@ for j = 1:num_steps
     %%%%%%%%%%%%%%%%%%%%%%%
 
     % Get true data for each step
-    true_position = true_positions(j);
+    true_position = true_positions(j); 
     true_velocity = true_velocities(j); 
     observation = observations(j); 
 
-    % Predict 
-    particles = Predict(particles, t, dt, process_noise, input_noise, estimate(1), estimate(2));  % Assume time step of 1, std of guassian noise to be 2; 
 
     % Update 
     weights = Update(particles, weights, observation, measurement_noise);
-    
+
     % Resample 
     [particles, weights] = Resample(particles, weights, position_noise_std, velocity_noise_std);
 
     % Estimate 
     [mean_x, mean_v, ~, ~] = Estimate(particles, weights);
     estimate = [mean_x, mean_v]; 
+
+    % Predict 
+    particles = Predict(particles, t, dt, process_noise, estimate(1), estimate(2));  % Assume time step of 1, std of guassian noise to be 2; 
+
 
     % Time Update
     t = t + dt; 

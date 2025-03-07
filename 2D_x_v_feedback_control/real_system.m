@@ -7,10 +7,13 @@ velocity = 3;
 
 
 t = 0; 
-dt = 0.03; % time-track 
-num_steps = 2000; % Define the number of simulation steps
+dt = 0.04; % time-track 
+num_steps = 1000; % Define the number of simulation steps
  
-
+% Noises Setup
+% process noice
+process_noise = 20; 
+observeation_noise = 10; 
 
 % Storage for plotting
 positions = zeros(num_steps, 1);
@@ -26,14 +29,14 @@ for j = 1:num_steps
 
 
     % feedback control parameters
-    k_pos = -0.6;
-    k_vel = -0.3;
+    k_pos = -1;
+    k_vel = -0.1;
+    % a = -9*tan(3*t); 
     a = k_pos * p(1) + k_vel * p(2); 
 
-    % with noise at base level
-    noise_size = 50; 
-    noise_a = randn * noise_size;
-    a = a + noise_a; 
+
+    % noise_a = randn * noise_size;
+    % a = a + noise_a; 
 
     % propogate model
     A = [1, dt; 0, 1];       % A
@@ -41,7 +44,7 @@ for j = 1:num_steps
     % process_noise = std .* randn(2, 1); 
 
     % Update state
-    p = (A * p')' + B * a; 
+    p = (A * p')' + B * a + randn * process_noise;
     
     % Store values for plotting
     positions(j) = p(1); % x
@@ -51,15 +54,26 @@ for j = 1:num_steps
 end
 
 
+
+
+% Calculate Sensor output: a * p + b * v
+a = 0.3;
+b = 0.7; 
+outputs = positions * a + velocities * b + observeation_noise * randn; 
+
+
+
+
 % Save for output 
 save('positions.mat', 'positions'); 
 save('velocities.mat', "velocities"); 
-
-% Calculate Sensor output: a * p + b * v
-a = 0.7;
-b = 0.3; 
-outputs = positions * a + velocities * b; 
 save('outputs.mat', 'outputs'); 
+
+
+
+
+
+
 
 % Plot results
 figure;

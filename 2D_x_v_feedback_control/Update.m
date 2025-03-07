@@ -12,8 +12,8 @@ function updated_weights = Update(particles, weights, z, R)
     % Compute distances between particle positions and measurement z
 
     % Calculate according to output function
-    a = 0.7;
-    b = 0.3; 
+    a = 0.3;
+    b = 0.7; 
     curr = particles(:,1) * a + particles(:,2) * b; 
     dist = curr - z; 
     

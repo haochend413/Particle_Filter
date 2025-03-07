@@ -3,7 +3,7 @@
 
 % Initial conditions
 position = 1000; 
-velocity = 3; 
+velocity = 0; 
 std = [1, 2]; % gaussian noise stds for (position, velocity)
 
 t = 0; 
@@ -24,7 +24,7 @@ p = [position, velocity];
 for j = 1:num_steps
 
     % with noise at base level
-    noise_a = randn;
+    noise_a = randn * 10;
     a = -9*sin(3*t); 
     a = a + noise_a; 
 

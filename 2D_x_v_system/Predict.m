@@ -21,8 +21,8 @@ function predicted_particles = Predict(particles, t, dt, std)
 
     process_noise = std .* randn(size(particles)); 
     
-    % Apply transition to all particles
-    % use transpose to do matrix multiplication
+    % Apply transition to all particles  
+    % use transpose to do matrix multiplication  
     predicted_particles = (A * particles')' + B * a + process_noise;
 end
 
