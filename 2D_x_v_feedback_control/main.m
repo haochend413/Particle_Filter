@@ -28,7 +28,7 @@ dt = 0.04;
 % **!!!** a is initialized inside the predict function
 process_noise = [1, 3];      % [std_x, std_v] 
 % Update Step (observation model)
-measurement_noise = 15;          % std_x_observed
+measurement_noise = 20;          % std_x_observed
  
 % Resampling
 position_noise_std = 1;  % jittering noises for position and velocity

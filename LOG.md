@@ -5,9 +5,9 @@
 
 If the noise from the model itself is high for the real system, the observation noise in the filter should be high and the process noise should be small.
 If the noise from the sensor is high, the other way around. 
-### 2/15
-- fix updating weights
-- Completed 2D x_v system pf implementation
+### 2/15 
+- fix updating weights 
+- Completed 2D x_v system pf implementation 
 
 ### 2/11
 - I think the reason why the result diverges is that size of dt is too large, and the reason for collapse is sample impoverishment; 
