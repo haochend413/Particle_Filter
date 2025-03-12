@@ -16,10 +16,11 @@ function predicted_particles = Predict(particles, t, dt, std, p, v)
 
     % feedback parameters
 
-    k_pos = -1;
-    k_vel = -0.1;
+    % feedback control parameters
+    k_pos = -0.1;
+    k_vel = -0.15;
     % a = -9*tan(3*t); 
-    a = k_pos * p + k_vel * v;
+    a = k_pos * (p - 100) + k_vel * v ; 
 
     A = [1, dt; 0, 1]; 
     B = [dt^2 / 2, dt]; 

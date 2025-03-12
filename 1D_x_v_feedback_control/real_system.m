@@ -1,13 +1,13 @@
 % real system
 
 % Initial conditions
-position = 1000; 
-velocity = 3; 
+position = 10; 
+velocity = -1; 
 
 
 t = 0; 
 dt = 0.04; % time-track 
-num_steps = 1000; % Define the number of simulation steps
+num_steps = 5000; % Define the number of simulation steps
  
 % Noises Setup
 % process noice 
@@ -30,15 +30,15 @@ for j = 1:num_steps
 
 
     % feedback control parameters
-    k_pos = -1;
-    k_vel = -0.1;
+    k_pos = -0.1;
+    k_vel = -1;
     % a = -9*tan(3*t); 
-    a = k_pos * p(1) + k_vel * p(2); 
+    a = k_pos * (p(1) - 0) + k_vel * p(2) ; 
 
 
-    % noise_a = randn * noise_size;
+    % noise_a = randn * noise_size; 
     % a = a + noise_a; 
-    process_noise =  8; 
+    process_noise = 0.0005; 
 
     % propogate model
     A = [1, dt; 0, 1];       % A
@@ -47,7 +47,6 @@ for j = 1:num_steps
 
     % Update state
     p = (A * p')' + B * a + randn * process_noise;
-    
 
     % Store values for plotting
     positions(j) = p(1); % x
@@ -55,7 +54,7 @@ for j = 1:num_steps
 
     % output generation
     % Calculate Sensor output: a * p + b * v
-    observation_noise = 0; %p(1) / 5 + p(2) / 5
+    observation_noise = 0; %p(1) / 20 + p(2) / 20; 
     a = 0.3;
     b = 0.7; 
     outputs(j) = p(1) * a + p(2) * b + observation_noise * randn; 

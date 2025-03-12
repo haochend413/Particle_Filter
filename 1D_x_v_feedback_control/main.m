@@ -5,16 +5,16 @@ clear;
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % Set Parameters
-%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% 
 
 % Syncronize these parameters with real_system parameters! 
 
 % init particles
 ranges = [-2000,2000; -400, 400]; 
-num_particles = 10000; 
+num_particles = 1000; 
 
 % init system 
-num_steps = 1000;               % Number of time steps 
+num_steps = 5000;               % Number of time steps 
 t = 0;                         % time start with 0, increase each step
 dt = 0.04; 
 
@@ -26,9 +26,9 @@ dt = 0.04;
 % | v | (t + dt)   | 0   1 | | v | (t)  | dt |
 
 % **!!!** a is initialized inside the predict function
-process_noise = [1, 3];      % [std_x, std_v] 
+process_noise = [0.1, 0.1];      % [std_x, std_v] 
 % Update Step (observation model)
-measurement_noise = 20;          % std_x_observed
+measurement_noise = 200;          % std_x_observed
  
 % Resampling
 position_noise_std = 1;  % jittering noises for position and velocity
@@ -137,7 +137,8 @@ plot(dt:dt:num_steps * dt, history_particles(:, 1), 'b', 'DisplayName', 'Estimat
 xlabel('Time Step' , 'FontName', 'Times New Roman', 'FontSize', 12);
 ylabel('Position' , 'FontName', 'Times New Roman', 'FontSize', 12);
 legend('Location','southeast');
-title('Position Estimation Over Time' , 'FontName', 'Times New Roman', 'FontSize', 12); 
+title('Position Estimation Over Time' , 'FontName', 'Times New Roman', 'FontSize', 12);
+grid on; 
 set(gca, 'FontSize', 20)
 set(gca, 'FontName', 'Times New Roman')
 
@@ -154,6 +155,18 @@ legend('Location','best');
 grid on; 
 set(gca, 'FontSize', 20)
 set(gca, 'FontName', 'Times New Roman')
+% 
+% figure; 
+% plot(dt:dt:num_steps * dt, history_true_velocity - history_particles(:, 2), 'r', 'DisplayName', 'True Velocity' ,'LineWidth', 3); 
+% xlabel('Time Step' , 'FontName', 'Times New Roman', 'FontSize', 12);
+% ylabel('Velocity' , 'FontName', 'Times New Roman', 'FontSize', 12);
+% title('Estimated Velocity Over Time' , 'FontName', 'Times New Roman', 'FontSize', 12);
+% legend('Location','best');
+% grid on; 
+% set(gca, 'FontSize', 20)
+% set(gca, 'FontName', 'Times New Roman')
+% ylim([-100 100])
+
 
 hold off; % Release the hold to prevent future plots from being added to the same figure
 
