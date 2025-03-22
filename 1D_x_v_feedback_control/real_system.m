@@ -1,8 +1,8 @@
 % real system
 
 % Initial conditions
-position = 10; 
-velocity = -1; 
+position = 1000; 
+velocity = 3; 
 
 
 t = 0; 
@@ -30,15 +30,15 @@ for j = 1:num_steps
 
 
     % feedback control parameters
-    k_pos = -0.1;
-    k_vel = -1;
+    k_pos = -1;
+    k_vel = -0.1;
     % a = -9*tan(3*t); 
     a = k_pos * (p(1) - 0) + k_vel * p(2) ; 
 
 
     % noise_a = randn * noise_size; 
     % a = a + noise_a; 
-    process_noise = 0.0005; 
+    process_noise = 8; 
 
     % propogate model
     A = [1, dt; 0, 1];       % A

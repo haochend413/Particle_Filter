@@ -10,7 +10,7 @@ clear;
 % Syncronize these parameters with real_system parameters! 
 
 % init particles
-ranges = [-2000,2000; -400, 400]; 
+ranges = [-20,20; -2, 2]; 
 num_particles = 1000; 
 
 % init system 
@@ -26,9 +26,9 @@ dt = 0.04;
 % | v | (t + dt)   | 0   1 | | v | (t)  | dt |
 
 % **!!!** a is initialized inside the predict function
-process_noise = [0.1, 0.1];      % [std_x, std_v] 
+process_noise = [0.001, 0.002];      % [std_x, std_v] 
 % Update Step (observation model)
-measurement_noise = 200;          % std_x_observed
+measurement_noise = 12;          % std_x_observed
  
 % Resampling
 position_noise_std = 1;  % jittering noises for position and velocity
@@ -65,7 +65,7 @@ history_true_velocity = zeros(num_steps, 1);
 % estimate result, start at [0,0] an get updated; 
 % the estimated results will be used instead of the observed results;
 [init_p, init_v, ~ ,~] = Estimate(particles, weights);
-estimate = [1000,5]; 
+estimate = [10,-1]; 
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % PF Propagation
