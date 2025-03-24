@@ -4,11 +4,11 @@ positiony = 5;
 positionz = 5; 
 velocityx = -0; 
 velocityy = -0;
-velocityz = -0;
+velocityz = -0;                                                        
 
 t = 0; 
 dt = 0.04; % time-step 
-num_steps = 1000; % Define the number of simulation steps
+num_steps = 800; % Define the number of simulation steps
 
 % Storage for plotting & data
 positionxs = zeros(num_steps, 1);  
@@ -58,6 +58,7 @@ for j = 1:num_steps
     positionxs(j) = p(1); % x
     positionys(j) = p(3); % y
     positionzs(j) = p(5); % z
+    t = t + dt; 
     velocitiesx(j) = p(2); % vx
     velocitiesy(j) = p(4); % vy
     velocitiesz(j) = p(6); % vz
@@ -65,11 +66,10 @@ for j = 1:num_steps
     % Output generation 
     observation_noise = 0.2; 
     ax = 1; bx = 0; 
-    ay = 1; by = 0; 
-    az = 1; bz = 0; 
+    ay = 1.1; by = 0; 
+    az = 2.1; bz = 0; 
     outputs(j) = p(1) * ax + p(2) * bx + p(3) * ay + p(4) * by + p(5) * az + p(6) * bz + observation_noise * randn; 
 
-    t = t + dt; 
 end
 
 % Save for output 

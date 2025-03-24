@@ -30,9 +30,9 @@ function predicted_particles = Predict(particles, t, dt, std, p)
         particle = particles(i, :)';  % Convert to column vector
         
         % We should use p, which is the estimate of the particles; 
-    ax = sin(t);
-    ay = 9*sin(3*t);
-    az = 4*sin(2*t);
+        ax = 4*sin(2*t);
+        ay = sin(t); 
+        az = sin(t);
         a = [ax; ay; az];
         
         % Generate process noise (match format from real system)

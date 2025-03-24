@@ -10,24 +10,24 @@ clear;
 % Syncronize these parameters with real_system parameters! 
 
 % init particles
-ranges = [-20,20; -20,20; -20,20; -5, 5; -5, 5; -5, 5]; 
-num_particles = 5000; 
+ranges = [0,0;0,0;0,0;-2,-2;-2,-2;-2,-2]; 
+num_particles = 1000; 
 
 % init system 
-num_steps = 500;               % Number of time steps 
+num_steps = 5000;               % Number of time steps 
 t = 0;                         % time start with 0, increase each step
 dt = 0.04; 
 
 
 % Predict step (state model) 
 % **!!!** a is initialized inside the predict function
-process_noise = [3e-5,3e-5,3e-5,3e-5,3e-5,3e-5];     
+process_noise = [3e-4,3e-4,3e-4,3e-4,3e-4,3e-4];     
 % Update Step (observation model)
-measurement_noise = 13;                         % noise for sensor
+measurement_noise = 15;                         % noise for sensor
  
 % Resampling 
-position_noise_std = 1;  % jittering noises for position and velocity
-velocity_noise_std = 2; 
+position_noise_std = 0.1;  % jittering noises for position and velocity
+velocity_noise_std = 0.2; 
 
 
 
@@ -68,7 +68,7 @@ history_vz = zeros(num_steps, 1);
 
 % estimate result, start at [0,0] an get updated; 
 % the estimated results will be used instead of the observed results;
-estimate = [5,5,5,-0,-0,-0]; 
+estimate = [0,0,0,-2,-2,-2]; 
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % PF Propagation

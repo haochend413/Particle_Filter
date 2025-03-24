@@ -8,7 +8,7 @@ velocityz = -2;
 
 t = 0; 
 dt = 0.04; % time-step 
-num_steps = 500; % Define the number of simulation steps
+num_steps = 5000; % Define the number of simulation steps
 
 % Storage for plotting & data
 positionxs = zeros(num_steps, 1);  
@@ -25,14 +25,14 @@ p = [positionx, velocityx, positiony, velocityy, positionz, velocityz];
 for j = 1:num_steps
     k_posx = -10;
     k_velx = -1;
-    k_posy = -1;
+    k_posy = -10;
     k_vely = -1;
-    k_posz = -1;
+    k_posz = -10;
     k_velz = -1;
 
-    ax = sin(t);
-    ay = 9*sin(3*t);
-    az = 4*sin(2*t);
+    ax = 4*sin(2*t);
+    ay = sin(t); 
+    az = sin(t);
 
     p = p(:);  % enforce column
     a = [ax; ay; az];  % enforce column
@@ -51,7 +51,7 @@ for j = 1:num_steps
          0, 0, dt^2/2; 
          0, 0, dt]; 
 
-    process_noise = 0.008* [1;1;1;1;1;1] .* randn(size(p)); 
+    process_noise = 0.001* [1;1;1;1;1;1] .* randn(size(p)); 
     p = A * p + B * a + process_noise;  % clean matrix math
 
     % Store values for plotting
@@ -63,10 +63,10 @@ for j = 1:num_steps
     velocitiesz(j) = p(6); % vz
 
     % Output generation 
-    observation_noise = 0.2; 
-    ax = 1; bx = 0.2; 
-    ay = 2; by = 0.4; 
-    az = 4; bz = 0.8; 
+    observation_noise = 1; 
+    ax = 0.33; bx = 0; 
+    ay = 0.33; by = 0; 
+    az = 0.33; bz = 0; 
     outputs(j) = p(1) * ax + p(2) * bx + p(3) * ay + p(4) * by + p(5) * az + p(6) * bz + observation_noise * randn; 
 
     t = t + dt; 
