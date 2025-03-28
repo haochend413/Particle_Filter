@@ -11,7 +11,7 @@ clear;
 
 % init particles
 ranges = [-20,20; -2, 2]; 
-num_particles = 1000; 
+num_particles = 3000; 
 
 % init system 
 num_steps = 5000;               % Number of time steps 
@@ -26,13 +26,13 @@ dt = 0.04;
 % | v | (t + dt)   | 0   1 | | v | (t)  | dt |
 
 % **!!!** a is initialized inside the predict function
-process_noise = [0.001, 0.002];      % [std_x, std_v] 
+process_noise = [0.01, 0.02];      % [std_x, std_v] 
 % Update Step (observation model)
-measurement_noise = 12;          % std_x_observed
+measurement_noise = 30;          % std_x_observed
  
 % Resampling
-position_noise_std = 1;  % jittering noises for position and velocity
-velocity_noise_std = 1; 
+position_noise_std = 5;  % jittering noises for position and velocity
+velocity_noise_std = 5; 
 
 
 % Fetch Observed Data (NOT FOR USE)

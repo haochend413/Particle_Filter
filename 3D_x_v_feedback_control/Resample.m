@@ -11,7 +11,7 @@
 % 2. updated weights
 
 
-function [resampled_particles, norm_weights] = Resample(particles, weights, position_noise_std, velocity_noise_std)
+function [resampled_particles, norm_weights] = Resample(particles, weights, jnoise_xx,jnoise_xv,jnoise_yx,jnoise_yv,jnoise_zx,jnoise_zv)
     num_particles = length(weights);
 
     % make partition
@@ -43,18 +43,21 @@ function [resampled_particles, norm_weights] = Resample(particles, weights, posi
 
     % Jittering comes after estimate; 
 
-    % % Add Gaussian noise to resampled particles
-
-    noise_x = position_noise_std * randn(num_particles, 1);  % Noise for position
-    noise_v = velocity_noise_std * randn(num_particles, 1);  % Noise for velocity
+    % % Add Gaussian noise
+    noise_xx = jnoise_xx * randn(num_particles, 1);  % Noise for position
+    noise_xv = jnoise_xv * randn(num_particles, 1);  % Noise for velocity
+    noise_yx = jnoise_yx * randn(num_particles, 1);  % Noise for position
+    noise_yv = jnoise_yv * randn(num_particles, 1);  % Noise for velocity
+    noise_zx = jnoise_zx * randn(num_particles, 1);  % Noise for position
+    noise_zv = jnoise_zv * randn(num_particles, 1);  % Noise for velocity
 
     % Apply noise to each resampled particle
-    resampled_particles(:, 1) = resampled_particles(:, 1) + noise_x;  % Update positions with noise
-    resampled_particles(:, 2) = resampled_particles(:, 2) + noise_v;  % Update velocities with noise
-    resampled_particles(:, 3) = resampled_particles(:, 3) + noise_x;  % Update positions with noise
-    resampled_particles(:, 4) = resampled_particles(:, 4) + noise_v;  % Update velocities with noise
-    resampled_particles(:, 5) = resampled_particles(:, 5) + noise_x;  % Update positions with noise
-    resampled_particles(:, 6) = resampled_particles(:, 6) + noise_v;  % Update velocities with noise
+    resampled_particles(:, 1) = resampled_particles(:, 1) + noise_xx;  % Update positions with noise
+    resampled_particles(:, 2) = resampled_particles(:, 2) + noise_xv;  % Update velocities with noise
+    resampled_particles(:, 3) = resampled_particles(:, 3) + noise_yx;  % Update positions with noise
+    resampled_particles(:, 4) = resampled_particles(:, 4) + noise_yv;  % Update velocities with noise
+    resampled_particles(:, 5) = resampled_particles(:, 5) + noise_zx;  % Update positions with noise
+    resampled_particles(:, 6) = resampled_particles(:, 6) + noise_zv;  % Update velocities with noise
 end
     
    

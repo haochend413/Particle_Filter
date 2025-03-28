@@ -1,14 +1,14 @@
 % Initial conditions
-positionx = 5; 
-positiony = 5; 
-positionz = 5; 
-velocityx = -0; 
-velocityy = -0;
-velocityz = -0;                                                        
+positionx = 50; 
+positiony = 50; 
+positionz = 50; 
+velocityx = -2; 
+velocityy = -2;
+velocityz = -2;                                                        
 
 t = 0; 
 dt = 0.04; % time-step 
-num_steps = 800; % Define the number of simulation steps
+num_steps = 2000; % Define the number of simulation steps
 
 % Storage for plotting & data
 positionxs = zeros(num_steps, 1);  
@@ -17,33 +17,34 @@ positionzs = zeros(num_steps, 1);
 velocitiesx = zeros(num_steps, 1); 
 velocitiesy = zeros(num_steps, 1); 
 velocitiesz = zeros(num_steps, 1); 
-outputs = zeros(num_steps, 1);
+outputs = zeros(num_steps, 6); 
+% outputs = zeros(num_steps, 1);
 
 % Create single particle
 p = [positionx, velocityx, positiony, velocityy, positionz, velocityz]; 
 
 for j = 1:num_steps
-    k_posx = -10;
+    k_posx = -0.1;
     k_velx = -1;
     k_posy = -1;
-    k_vely = -1;
-    k_posz = -1;
-    k_velz = -1;
+    k_vely = -0.5;
+    k_posz = -0.1;
+    k_velz = -0.1;
 
     ax = k_posx * p(1) + k_velx * p(2); 
     ay = k_posy * p(3) + k_vely * p(4);
     az = k_posz * p(5) + k_velz * p(6); 
 
-    p = p(:);  % enforce column
-    a = [ax; ay; az];  % enforce column
 
+    a = [ax, ay, az];  % enforce column
+    % A'
     A = [1, dt, 0, 0, 0, 0; 
          0, 1, 0, 0, 0, 0; 
          0, 0, 1, dt, 0, 0; 
          0, 0, 0, 1, 0, 0; 
          0, 0, 0, 0, 1, dt; 
          0, 0, 0, 0, 0, 1]; 
-
+    % B'
     B = [dt^2/2, 0, 0; 
          dt, 0, 0; 
          0, dt^2/2, 0; 
@@ -51,8 +52,8 @@ for j = 1:num_steps
          0, 0, dt^2/2; 
          0, 0, dt]; 
 
-    process_noise = 0.1 * [1;1;1;1;1;1] .* randn(size(p)); 
-    p = A * p + B * a + process_noise;  % clean matrix math
+    process_noise = 0.1 * [1,1,1,1,1,1] .* randn(size(p)); 
+    p = p * A' + a * B' + process_noise;  % clean matrix math
 
     % Store values for plotting
     positionxs(j) = p(1); % x
@@ -64,11 +65,14 @@ for j = 1:num_steps
     velocitiesz(j) = p(6); % vz
 
     % Output generation 
-    observation_noise = 0.2; 
-    ax = 1; bx = 0; 
-    ay = 1.1; by = 0; 
-    az = 2.1; bz = 0; 
-    outputs(j) = p(1) * ax + p(2) * bx + p(3) * ay + p(4) * by + p(5) * az + p(6) * bz + observation_noise * randn; 
+    observation_noise = 0.1 * randn(1,6); 
+    C = [1,0,0,0,0,0;
+         0,1,0,0,0,0;
+         0,0,1,0,0,0;
+         0,0,0,1,0,0;
+         0,0,0,0,1,0;
+         0,0,0,0,0,1];
+    outputs(j,:) = p * C + observation_noise; 
 
 end
 

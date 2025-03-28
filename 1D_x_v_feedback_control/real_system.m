@@ -38,7 +38,7 @@ for j = 1:num_steps
 
     % noise_a = randn * noise_size; 
     % a = a + noise_a; 
-    process_noise = 8; 
+    process_noise = 4; 
 
     % propogate model
     A = [1, dt; 0, 1];       % A
@@ -54,7 +54,7 @@ for j = 1:num_steps
 
     % output generation
     % Calculate Sensor output: a * p + b * v
-    observation_noise = 0; %p(1) / 20 + p(2) / 20; 
+    observation_noise = 1; %p(1) / 20 + p(2) / 20; 
     a = 0.3;
     b = 0.7; 
     outputs(j) = p(1) * a + p(2) * b + observation_noise * randn; 
