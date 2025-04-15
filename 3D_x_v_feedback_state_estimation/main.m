@@ -14,7 +14,7 @@ ranges = [-150,150; -150,150; -150,150; -10, 10; -10, 10; -10, 10];
 num_particles = 2000; 
 
 % init system 
-num_steps = 800;               % Number of time steps
+num_steps = 2000;               % Number of time steps
 t = 0;                         % time start with 0, increase each step
 dt = 0.04; 
 
@@ -24,6 +24,12 @@ dt = 0.04;
 process_noise = 0.03 * [1,1,1,1,1,1];     
 % Update Step (observation model)
 measurement_noise = 2; %0.00249661;                         % noise for sensor
+theta = [5,0,0,0,0,0;
+        0,5,0,0,0,0;
+        0,0,5,0,0,0;
+        0,0,0,5,0,0;
+        0,0,0,0,5,0;
+        0,0,0,0,0,5]; % init theta (obsermation model parameter matrix; )
  
 % Resampling 
 jnoise_xx = 0.8;  % jittering noises for position and velocity
@@ -87,12 +93,14 @@ for j = 1:num_steps
     %%%%%%%%%%%%%%%%%%%%%%%
 
     % Get true data for each step
-    
     observation = observations(j,:); 
+
+    % Parameter matrix Estimation; 
+    theta = Project_alg(theta, estimate, observation); 
 
 
     % Update 
-    weights = Update(particles, weights, observation, measurement_noise);
+    weights = Update(particles, weights, observation, measurement_noise, theta);
 
     % Resample 
     [particles, weights] = Resample(particles, weights, jnoise_xx,jnoise_xv,jnoise_yx,jnoise_yv,jnoise_zx,jnoise_zv);
@@ -101,6 +109,7 @@ for j = 1:num_steps
     [mean_xx, mean_vx, mean_xy, mean_vy, mean_xz, mean_vz] = Estimate(particles, weights);
     estimate = [mean_xx, mean_vx, mean_xy, mean_vy, mean_xz, mean_vz]; 
 
+    
     % Predict 
     particles = Predict(particles, t, dt, process_noise, estimate);  % Assume time step of 1, std of guassian noise to be 2; 
 
@@ -115,13 +124,14 @@ for j = 1:num_steps
     % Display progress
     % disp(['size of particles: ', num2str(size(particles, 1))]); 
     % disp(['Step ', num2str(t), ...
-    %     ': True Position = ', num2str(true_position), ...
-    %     ', Estimated Position = ', num2str(mean_x), ...
+    %     ': True Position = ', num2str(true_position), ... 
+    %     ', Estimated Position = ', num2str(mean_x), ... 
     %     ', Estimated Velocity = ', num2str(mean_v), ...
     %     ', True v', num2str(true_velocity)]);
     
     
-    % Store history for plotting
+    % Store history for plotting 
+    % The estimation result is 1:1 real state values; 
     history_particles(j, :) = [mean_xx, mean_vx, mean_xy, mean_vy, mean_xz, mean_vz];
     history_xx(j) = true_positionsx(j); 
     history_xy(j) = true_positionsy(j); 

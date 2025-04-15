@@ -8,7 +8,7 @@ velocityz = -2;
 
 t = 0; 
 dt = 0.04; % time-step 
-num_steps = 800; % Define the number of simulation steps
+num_steps = 2000; % Define the number of simulation steps
 
 % Storage for plotting & data
 positionxs = zeros(num_steps, 1);  
@@ -52,7 +52,7 @@ for j = 1:num_steps
          0, 0, dt^2/2; 
          0, 0, dt]; 
 
-    process_noise = 0.4 * [1,1,1,1,1,1] .* rand(size(p));
+    process_noise = 0.3 * [1,1,1,1,1,1] .* rand(size(p));
     p = p * A' + a * B' + process_noise;  % clean matrix math
 
     % Store values for plotting
@@ -67,12 +67,13 @@ for j = 1:num_steps
     % Output generation 
     observation_noise = 0.05 * randn(1,6); 
     C = [1,0,0,0,0,0;
-         0,1,0,0,0,0;
+         0,20,0,0,0,0;
          0,0,1,0,0,0;
-         0,0,0,1,0,0;
+         0,0,0,2,0,0;
          0,0,0,0,1,0;
-         0,0,0,0,0,1];
+         0,0,0,0,0,2]; 
     outputs(j,:) = p * C + observation_noise; 
+    % output shape: 1 * 6 vector; 
 
 end
 
