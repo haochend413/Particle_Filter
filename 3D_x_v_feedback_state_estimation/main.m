@@ -24,12 +24,12 @@ dt = 0.04;
 process_noise = 0.03 * [1,1,1,1,1,1];     
 % Update Step (observation model)
 measurement_noise = 2; %0.00249661;                         % noise for sensor
-theta = [5,0,0,0,0,0;
-        0,5,0,0,0,0;
-        0,0,5,0,0,0;
-        0,0,0,5,0,0;
-        0,0,0,0,5,0;
-        0,0,0,0,0,5]; % init theta (obsermation model parameter matrix; )
+theta = [1,0,0,0,0,0;
+        0,20,0,0,0,0;
+        0,0,1,0,0,0;
+        0,0,0,2,0,0;
+        0,0,0,0,1,0;
+        0,0,0,0,0,2]; % init theta (obsermation model parameter matrix; )
  
 % Resampling 
 jnoise_xx = 0.8;  % jittering noises for position and velocity

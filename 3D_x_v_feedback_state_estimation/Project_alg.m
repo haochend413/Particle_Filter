@@ -2,10 +2,10 @@
 % model; 
 % input: old parameter matrix (theta); estimation (raw states, phi); observation (conbined output, y); 
 % output: updated parameter matrix (theta_new)
-% function theta_new = Project_alg(theta, estimation, observation)
-%     error_term = observation - estimation * theta;       
-%     gain = estimation' / (estimation * estimation');     
-%     theta_new = theta + gain * error_term;               
+
+
+% function theta_new = Project_alg(theta, estimation, observation) 
+%     theta_new = theta + estimation' / (estimation * estimation') * observation - estimation * theta;               
 % 
 %     % Print the updated theta matrix
 %     disp('Updated theta matrix:');
@@ -14,11 +14,7 @@
 
 
 function theta_new = Project_alg(theta, estimation, observation)
-    error_term = diag(observation) - diag(estimation) .* theta;
-    gain = diag(estimation) ./ sum(estimation.^2, 2);  % Assuming row-wise update
-    theta_new = theta + gain .* error_term;
-             
-
+    theta_new = theta + (diag(estimation) ./ sum(estimation.^2, 2)) .* (diag(observation) - diag(estimation) .* theta);
     % Print the updated theta matrix
     disp('Updated theta matrix:');
     disp(theta_new);
