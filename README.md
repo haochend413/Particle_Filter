@@ -2,10 +2,13 @@
 
 SP 2025 URAP project
 
-Run tests in the tests folder: 
+Run models: 
+
 ```bash
 # example
-run test_1D_res.m
+# in specific folder
+run real_system.m # To generate observations
+run main.m # To run particle filter
 ```
 
 
